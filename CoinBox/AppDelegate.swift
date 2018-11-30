@@ -13,10 +13,13 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var tabBarController = UITabBarController()
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        window = UIWindow(frame: UIScreen.main.bounds)
+        initTabBar()
         return true
     }
 
@@ -89,5 +92,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func initTabBar() {
+        let vc1 = setUpViewController(title: "Home", image: "homepage", backgroundColor: UIColor.clear)
+        let vc2 = setUpViewController(title: "Alerts", image: "bell", backgroundColor: UIColor.purple)
+        let vc3 = setUpViewController(title: "news", image: "newspaper", backgroundColor: UIColor.red)
+        let vc4 = setUpViewController(title: "More", image: "more", backgroundColor: UIColor.green)
+        
+        // Set up the Tab Bar Controller
+        tabBarController.viewControllers = [vc1, vc2, vc3, vc4]
+        
+        // Make the Tab Bar Controller the root view controller
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+    }
+    
+    func setUpViewController(title: String, image: String, backgroundColor: UIColor) -> UIViewController {
+//        let vc = UIViewController()
+        let vc = HomeViewController(nibName: "HomeViewController", bundle: nil)
+        vc.view.backgroundColor = backgroundColor
+        vc.tabBarItem.title = title
+        vc.tabBarItem.image = UIImage(named: image)
+        return vc
+    }
 }
 
