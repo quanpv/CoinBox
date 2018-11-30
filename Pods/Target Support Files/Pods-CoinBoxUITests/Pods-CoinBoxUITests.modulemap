@@ -1,0 +1,6 @@
+framework module Pods_CoinBoxUITests {
+  umbrella header "Pods-CoinBoxUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
