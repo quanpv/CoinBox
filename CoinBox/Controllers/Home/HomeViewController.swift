@@ -12,17 +12,29 @@ class HomeViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
     @IBOutlet var segmentedControl: UISegmentedControl!
-    
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var rootView: UIView!
+    @IBOutlet weak var headerTopConstraint: NSLayoutConstraint!
     var count: Int?
     var listData: [CoinResponse] = []
     var slugToIDMap = [String : Int]()
+    var headerViewInitHeight = CGFloat()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         count = 10
         self.tableView.registerCellNib(AllCoinTableViewCell.self)
+        tableView.delegate = self
 //        tableView.delegate = self
-//        tableView.delegate = self
+        // add a top edge inset for table view.
+//        tableView.contentInset = UIEdgeInsets(top: headerView.frame.height, left: 0, bottom: 0, right: 0)
+        headerViewInitHeight = headerView.frame.height
+        
+        // update table view content height
+        tableView.layoutIfNeeded()
+        
+        // adjust scroll view content height using rootContainer height anchor
+//        rootViewHeightConstraint.constant = tableView.contentSize.height + headerViewInitHeight
         // Do any additional setup after loading the view.
         
         MGConnection.requestArray(APIRouter.coinInfo(limit: 200), CoinResponse.self, completion: { (result, err) in
@@ -111,7 +123,23 @@ extension HomeViewController:UITableViewDelegate, UITableViewDataSource {
         return cell!
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 
         return 50
+    }
+}
+
+extension HomeViewController:UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
+        let y = scrollView.contentOffset.y
+//            - tableView.contentOffset.y
+        self.headerTopConstraint.constant =  -y
+        if headerTopConstraint.constant > 0 || headerTopConstraint.constant == -headerViewInitHeight {
+            headerTopConstraint.constant = 0
+        }
+    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     }
 }
