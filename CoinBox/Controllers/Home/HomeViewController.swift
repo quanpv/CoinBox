@@ -15,14 +15,26 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var rootView: UIView!
     @IBOutlet weak var headerTopConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var noView: UIView!
+    @IBOutlet weak var noArrow: UIImageView!
+    @IBOutlet weak var nameView: UIView!
+    @IBOutlet weak var nameArrowImage: UIImageView!
+    @IBOutlet weak var percentChangeView: UIView!
+    @IBOutlet weak var percentChangeArrowImage: UIImageView!
+    @IBOutlet weak var priceView: UIView!
+    @IBOutlet weak var priceArrowImage: UIImageView!
+    
     var count: Int?
     var listData: [CoinResponse] = []
     var slugToIDMap = [String : Int]()
     var headerViewInitHeight = CGFloat()
+    var isSelectSort: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         count = 10
+        self.setupViewHeader()
         self.tableView.registerCellNib(AllCoinTableViewCell.self)
         tableView.delegate = self
 //        tableView.delegate = self
@@ -88,6 +100,78 @@ class HomeViewController: UIViewController {
             self.tableView.reloadData()
         }
     })
+    }
+    
+    private func setupViewHeader() {
+        let gesture = UITapGestureRecognizer(target: self, action:  #selector (self.clickAction (_:)))
+        self.noView.addGestureRecognizer(gesture)
+        let gesture2 = UITapGestureRecognizer(target: self, action:  #selector (self.clickAction2 (_:)))
+        self.nameView.addGestureRecognizer(gesture2)
+        let gesture3 = UITapGestureRecognizer(target: self, action:  #selector (self.clickAction3 (_:)))
+        self.percentChangeView.addGestureRecognizer(gesture3)
+        let gesture4 = UITapGestureRecognizer(target: self, action:  #selector (self.clickAction4 (_:)))
+        self.priceView.addGestureRecognizer(gesture4)
+    }
+    
+    // or for Swift 4
+    @objc func clickAction(_ sender:UITapGestureRecognizer){
+        // do other task
+         self.noArrow.isHidden = false
+        if(isSelectSort){
+            self.noArrow.transform = CGAffineTransform(rotationAngle: .pi)
+        }
+        else {
+            self.noArrow.transform = CGAffineTransform(rotationAngle: .pi*2)
+        }
+        self.nameArrowImage.isHidden = true
+        self.percentChangeArrowImage.isHidden = true
+        self.priceArrowImage.isHidden = true
+        isSelectSort = !isSelectSort
+    }
+    
+    @objc func clickAction2(_ sender:UITapGestureRecognizer){
+        // do other task
+          self.nameArrowImage.isHidden = false
+        if(isSelectSort){
+            self.nameArrowImage.transform = CGAffineTransform(rotationAngle: .pi)
+        }
+        else {
+            self.nameArrowImage.transform = CGAffineTransform(rotationAngle: .pi*2)
+        }
+        self.noArrow.isHidden = true
+        self.percentChangeArrowImage.isHidden = true
+        self.priceArrowImage.isHidden = true
+          isSelectSort = !isSelectSort
+    }
+    
+    @objc func clickAction3(_ sender:UITapGestureRecognizer){
+        // do other task
+        self.percentChangeArrowImage.isHidden = false
+        if(isSelectSort){
+            self.percentChangeArrowImage.transform = CGAffineTransform(rotationAngle: .pi)
+        }
+        else {
+            self.percentChangeArrowImage.transform = CGAffineTransform(rotationAngle: .pi*2)
+        }
+        self.nameArrowImage.isHidden = true
+        self.noArrow.isHidden = true
+        self.priceArrowImage.isHidden = true
+          isSelectSort = !isSelectSort
+    }
+    
+    @objc func clickAction4(_ sender:UITapGestureRecognizer){
+        // do other task
+        self.priceArrowImage.isHidden = false
+        if(isSelectSort){
+            self.priceArrowImage.transform = CGAffineTransform(rotationAngle: .pi)
+        }
+        else {
+            self.priceArrowImage.transform = CGAffineTransform(rotationAngle: .pi*2)
+        }
+        self.nameArrowImage.isHidden = true
+        self.percentChangeArrowImage.isHidden = true
+        self.noArrow.isHidden = true
+          isSelectSort = !isSelectSort
     }
     
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
