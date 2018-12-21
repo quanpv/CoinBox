@@ -16,7 +16,7 @@ class CMCQuickSearch: Mappable {
         
     }
     
-     func mapping(map: Map) {
+    func mapping(map: Map) {
         slug <- map["slug"]
         id <- map["id"]
     }

@@ -9,7 +9,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
     @IBOutlet var tableView: UITableView!
     @IBOutlet var segmentedControl: UISegmentedControl!
     @IBOutlet weak var headerView: UIView!
@@ -37,16 +37,16 @@ class HomeViewController: UIViewController {
         self.setupViewHeader()
         self.tableView.registerCellNib(AllCoinTableViewCell.self)
         tableView.delegate = self
-//        tableView.delegate = self
+        //        tableView.delegate = self
         // add a top edge inset for table view.
-//        tableView.contentInset = UIEdgeInsets(top: headerView.frame.height, left: 0, bottom: 0, right: 0)
+        //        tableView.contentInset = UIEdgeInsets(top: headerView.frame.height, left: 0, bottom: 0, right: 0)
         headerViewInitHeight = headerView.frame.height
         
         // update table view content height
         tableView.layoutIfNeeded()
         
         // adjust scroll view content height using rootContainer height anchor
-//        rootViewHeightConstraint.constant = tableView.contentSize.height + headerViewInitHeight
+        //        rootViewHeightConstraint.constant = tableView.contentSize.height + headerViewInitHeight
         // Do any additional setup after loading the view.
         
         MGConnection.requestArray(APIRouter.coinInfo(limit: 200), CoinResponse.self, completion: { (result, err) in
@@ -56,50 +56,50 @@ class HomeViewController: UIViewController {
             }
             print("Count:\(String(describing: result?.count))")
             if let result = result {
-                   self.listData = result
+                self.listData = result
                 self.getCMCQuickSearch()
                 for data in result {
-//                    self.listData.append(data)
+                    //                    self.listData.append(data)
                     print("name: "+data.name!)
                     print(data.percent_change_24h ?? "-")
                 }
             }
         })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-   private func getCMCQuickSearch() {
-    MGConnection.requestArray(APIRouter.quickSearch, CMCQuickSearch.self, completion: { (result, err) in
-        guard err == nil else {
-            print("False with code: \(err?.mErrorCode) and message: \(err?.mErrorMessage)")
-            return
-        }
-        
-        if let dataResponse = result {
-            for data in dataResponse {
-                self.slugToIDMap[data.slug!] = data.id
-                print(data.slug ?? "-")
-                print(data.id ?? "-")
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    private func getCMCQuickSearch() {
+        MGConnection.requestArray(APIRouter.quickSearch, CMCQuickSearch.self, completion: { (result, err) in
+            guard err == nil else {
+                print("False with code: \(err?.mErrorCode) and message: \(err?.mErrorMessage)")
+                return
             }
-            for data in self.listData {
-                data.idThumb = self.slugToIDMap[data.id!]
+            
+            if let dataResponse = result {
+                for data in dataResponse {
+                    self.slugToIDMap[data.slug!] = data.id
+                    print(data.slug ?? "-")
+                    print(data.id ?? "-")
+                }
+                for data in self.listData {
+                    data.idThumb = self.slugToIDMap[data.id!]
+                }
+                self.tableView.reloadData()
             }
-            self.tableView.reloadData()
-        }
-    })
+        })
     }
     
     private func setupViewHeader() {
@@ -116,7 +116,7 @@ class HomeViewController: UIViewController {
     // or for Swift 4
     @objc func clickAction(_ sender:UITapGestureRecognizer){
         // do other task
-         self.noArrow.isHidden = false
+        self.noArrow.isHidden = false
         if(isSelectSort){
             self.noArrow.transform = CGAffineTransform(rotationAngle: .pi)
         }
@@ -131,7 +131,7 @@ class HomeViewController: UIViewController {
     
     @objc func clickAction2(_ sender:UITapGestureRecognizer){
         // do other task
-          self.nameArrowImage.isHidden = false
+        self.nameArrowImage.isHidden = false
         if(isSelectSort){
             self.nameArrowImage.transform = CGAffineTransform(rotationAngle: .pi)
         }
@@ -141,7 +141,7 @@ class HomeViewController: UIViewController {
         self.noArrow.isHidden = true
         self.percentChangeArrowImage.isHidden = true
         self.priceArrowImage.isHidden = true
-          isSelectSort = !isSelectSort
+        isSelectSort = !isSelectSort
     }
     
     @objc func clickAction3(_ sender:UITapGestureRecognizer){
@@ -156,7 +156,7 @@ class HomeViewController: UIViewController {
         self.nameArrowImage.isHidden = true
         self.noArrow.isHidden = true
         self.priceArrowImage.isHidden = true
-          isSelectSort = !isSelectSort
+        isSelectSort = !isSelectSort
     }
     
     @objc func clickAction4(_ sender:UITapGestureRecognizer){
@@ -171,7 +171,7 @@ class HomeViewController: UIViewController {
         self.nameArrowImage.isHidden = true
         self.percentChangeArrowImage.isHidden = true
         self.noArrow.isHidden = true
-          isSelectSort = !isSelectSort
+        isSelectSort = !isSelectSort
     }
     
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
@@ -179,15 +179,15 @@ class HomeViewController: UIViewController {
         case 0:
             print("======> 0")
             count = 10
-          break
+            break
         case 1:
-               print("======> 1")
-               count = 3
-           break
+            print("======> 1")
+            count = 3
+            break
         default:
             break
         }
-//        tableView.reloadData()
+        //        tableView.reloadData()
     }
 }
 
@@ -199,11 +199,11 @@ extension HomeViewController:UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:AllCoinTableViewCell? = tableView.dequeueReusableCell(withIdentifier: AllCoinTableViewCell.className, for: indexPath) as? AllCoinTableViewCell
         if (cell == nil) {
-//            cell = tableView.dequeueReusableCell(withIdentifier: AllCoinTableViewCell.className) as? AllCoinTableViewCell
+            //            cell = tableView.dequeueReusableCell(withIdentifier: AllCoinTableViewCell.className) as? AllCoinTableViewCell
             cell = AllCoinTableViewCell(style: .default, reuseIdentifier: AllCoinTableViewCell.className)
         }
         cell?.setUpView(data: listData[indexPath.row])
-//        cell?.lblNo.text = String(indexPath.row+1)
+        //        cell?.lblNo.text = String(indexPath.row+1)
         return cell!
     }
     
@@ -216,7 +216,7 @@ extension HomeViewController:UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         print(scrollView.contentOffset.y)
         let y = scrollView.contentOffset.y
-//            - tableView.contentOffset.y
+        //            - tableView.contentOffset.y
         self.headerTopConstraint.constant =  -y
         if headerTopConstraint.constant > 0 || headerTopConstraint.constant == -headerViewInitHeight {
             headerTopConstraint.constant = 0

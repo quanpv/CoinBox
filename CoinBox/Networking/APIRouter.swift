@@ -12,6 +12,7 @@ enum APIRouter: URLRequestConvertible {
     // =========== Begin define api ===========
     case coinInfo(limit: Int)
     case quickSearch
+    case news
     
     // =========== End define api ===========
     
@@ -21,6 +22,8 @@ enum APIRouter: URLRequestConvertible {
         case .coinInfo:
             return .get
         case .quickSearch:
+            return .get
+        case .news:
             return .get
         }
     }
@@ -32,6 +35,8 @@ enum APIRouter: URLRequestConvertible {
             return "v1/ticker/"
         case .quickSearch:
             return "generated/search/quick_search.json"
+        case .news:
+            return "data/news/"
         }
     }
     
@@ -41,6 +46,8 @@ enum APIRouter: URLRequestConvertible {
             return Production.BASE_URL
         case .quickSearch:
             return Production.BASE_URL2
+        case .news:
+            return Production.BASE_URL3
         }
     }
     
@@ -51,6 +58,8 @@ enum APIRouter: URLRequestConvertible {
         case .coinInfo:
             break
         case .quickSearch:
+            break
+        case .news:
             break
         }
         
@@ -63,6 +72,8 @@ enum APIRouter: URLRequestConvertible {
         case .coinInfo(let limit):
             return ["limit": limit]
         case .quickSearch:
+            return nil
+        case .news:
             return nil
         }
     }

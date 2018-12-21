@@ -93,10 +93,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func initTabBar() {
-        let vc1 = setUpViewController(title: "Home", image: "homepage", backgroundColor: UIColor.clear)
-        let vc2 = setUpViewController(title: "Alerts", image: "bell", backgroundColor: UIColor.purple)
-        let vc3 = setUpViewController(title: "news", image: "newspaper", backgroundColor: UIColor.red)
-        let vc4 = setUpViewController(title: "More", image: "more", backgroundColor: UIColor.green)
+        let home = HomeViewController(nibName: HomeViewController.className, bundle: nil)
+        let alert = UIViewController()
+        let more = UIViewController()
+        let news = NewsViewController(nibName: NewsViewController.className, bundle: nil)
+        
+        let vc1 = setUpViewController(title: "Home", image: "homepage", backgroundColor: nil, screen: home)
+        let vc2 = setUpViewController(title: "Alerts", image: "bell", backgroundColor: UIColor.purple, screen: alert)
+        let vc3 = setUpViewController(title: "news", image: "newspaper", backgroundColor: nil, screen: news)
+        let vc4 = setUpViewController(title: "More", image: "more", backgroundColor: UIColor.green, screen: more)
         
         // Set up the Tab Bar Controller
         tabBarController.viewControllers = [vc1, vc2, vc3, vc4]
@@ -106,13 +111,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
     }
     
-    func setUpViewController(title: String, image: String, backgroundColor: UIColor) -> UIViewController {
+    func setUpViewController(title: String, image: String, backgroundColor: UIColor?, screen: UIViewController) -> UIViewController {
 //        let vc = UIViewController()
-        let vc = HomeViewController(nibName: "HomeViewController", bundle: nil)
-        vc.view.backgroundColor = backgroundColor
-        vc.tabBarItem.title = title
-        vc.tabBarItem.image = UIImage(named: image)
-        return vc
+//        let vc = HomeViewController(nibName: "HomeViewController", bundle: nil)
+        if let backgroundColor = backgroundColor {
+            screen.view.backgroundColor = backgroundColor
+        }
+        screen.tabBarItem.title = title
+        screen.tabBarItem.image = UIImage(named: image)
+        return screen
     }
 }
 
