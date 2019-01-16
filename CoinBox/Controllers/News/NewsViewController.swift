@@ -14,7 +14,7 @@ class NewsViewController: UIViewController {
      var listData: [NewsResponse] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-          self.tableView.registerCellNib(NewsTableViewCell.self)
+        self.tableView.registerCellNib(NewsTableViewCell.self)
         getNews()
         // Do any additional setup after loading the view.
     }
@@ -69,5 +69,12 @@ extension NewsViewController:UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("row selected : \(listData[indexPath.row].url ?? "-")")
+         let wkController = CBWebViewController()
+        wkController.urlWeb = listData[indexPath.row].url
+        self.present(wkController, animated: true, completion: nil)
     }
 }
